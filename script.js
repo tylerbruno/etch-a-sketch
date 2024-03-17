@@ -7,29 +7,31 @@ let numberOfSquaresInGrid = 16;
 changeSizeButton.addEventListener("click", () => {
     let requestedSize = Number(prompt("How many squares would you like in each row/column? No bigger than 100."));
 
-    if (requestedSize > 100) {
-        alert("Can't be greater than 100.");
-    } else if (isNaN(requestedSize)) {
+    validateEntry(requestedSize);
+
+});
+
+clearGridButton.addEventListener("click", () => {
+    container.innerHTML = '';
+    createGrid(numberOfSquaresInGrid);
+});
+
+const validateEntry = (entry) => {
+    if (entry > 100) {
+        alert("Please enter a number between 1 and 100.");
+    } else if (isNaN(entry)) {
         alert("Please enter a valid number");
+    } else if (entry < 1) {
+        alert("Please enter a number between 1 and 100.")
     } else {
         for (let i = 0; i < numberOfSquaresInGrid; i++) {
             const divContainer = document.querySelector("#container > div");
             divContainer.remove();
         }
-        createGrid(requestedSize);
-        numberOfSquaresInGrid = requestedSize;
+        createGrid(entry);
+        numberOfSquaresInGrid = entry;
     }
-
-});
-
-clearGridButton.addEventListener("click", () => {
-    for (let i = 0; i < numberOfSquaresInGrid; i++) {
-        const divContainer = document.querySelector("#container > div");
-        divContainer.remove();
-    }
-    createGrid(numberOfSquaresInGrid);
-});
-
+}
 
 
 const createGrid = (numberOfSquares) => {
@@ -39,13 +41,13 @@ const createGrid = (numberOfSquares) => {
         container.appendChild(div);
     
         for (let j = 0; j < numberOfSquares; j++) {
-            const squares = document.createElement("div");
-            squares.style.cssText = "flex: 1; outline: 1px solid black; margin: 0;";
-            div.appendChild(squares);
+            const square = document.createElement("div");
+            square.style.cssText = "flex: 1; outline: 1px solid black; margin: 0; background: white;";
+            div.appendChild(square);
     
-            squares.addEventListener("mouseover", () => {
+            square.addEventListener("mouseover", () => {
                 const randomColor = Math.floor(Math.random()*16777215).toString(16);
-                squares.style.backgroundColor = "#" + randomColor;
+                square.style.backgroundColor = "#" + randomColor;
             });
         }
     }
